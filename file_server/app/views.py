@@ -26,13 +26,7 @@ class FileList(TemplateView):
 
         return {
             'files': files,
-            'date': date  # Этот параметр необязательный
-            # 'files': [
-            #    {'name': 'file_name_1.txt',
-            #     'ctime': datetime.datetime(2018, 1, 1),
-            #     'mtime': datetime.datetime(2018, 1, 2)}
-            #],
-            # 'date': datetime.date(2018, 1, 1)  # Этот параметр необязательный
+            'date': date
         }
 
 
