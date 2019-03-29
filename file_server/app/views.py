@@ -17,8 +17,8 @@ class FileList(TemplateView):
         for file in files_list:
             files.append({
                 'name': file,
-                'ctime': datetime.fromtimestamp(os.path.getctime(os.path.join(FILES_PATH, file))).date(),
-                'mtime': datetime.fromtimestamp(os.path.getmtime(os.path.join(FILES_PATH, file))).date()
+                'ctime': datetime.fromtimestamp(os.path.getctime(os.path.join(FILES_PATH, file))),
+                'mtime': datetime.fromtimestamp(os.path.getmtime(os.path.join(FILES_PATH, file)))
             })
 
         if date:
