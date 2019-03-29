@@ -14,15 +14,19 @@ class FileList(TemplateView):
         # Реализуйте алгоритм подготавливающий контекстные данные для шаблона по примеру:
         files_list = os.listdir(FILES_PATH)
         files = []
-        for file in files_list:
-            files.append({
-                'name': file,
-                'ctime': datetime.fromtimestamp(os.path.getctime(os.path.join(FILES_PATH, file))),
-                'mtime': datetime.fromtimestamp(os.path.getmtime(os.path.join(FILES_PATH, file)))
-            })
 
         if date:
             date = datetime.strptime(date, '%Y-%m-%d').date()
+
+        for file in files_list:
+            ctime = datetime.fromtimestamp(os.path.getctime(os.path.join(FILES_PATH, file)))
+            mtime = datetime.fromtimestamp(os.path.getmtime(os.path.join(FILES_PATH, file)))
+            if not date or date == ctime.date() or date == mtime.date():
+                files.append({
+                    'name': file,
+                    'ctime': ctime,
+                    'mtime': mtime
+                })
 
         return {
             'files': files,
@@ -42,4 +46,3 @@ def file_content(request, name):
         context={'file_name': file_name,
                  'file_content': file_content}
     )
-
