@@ -1,18 +1,22 @@
 from django.shortcuts import render_to_response, redirect
 from django.urls import reverse
-from app.settings import BUS_STATION_CSV
+from django.conf import settings
+#from app.settings import BUS_STATION_CSV
 import csv
 
 
 all_stations = []
-with open(BUS_STATION_CSV, 'r', encoding='cp1251') as f:
-    reader = csv.DictReader(f, delimiter=',')
-    for line in reader:
-        all_stations.append({
-            'Name': line['Name'],
-            'Street': line['Street'],
-            'District': line['District']
-        })
+
+
+def main():
+    with open(settings.BUS_STATION_CSV, 'r', encoding='cp1251') as f:
+        reader = csv.DictReader(f, delimiter=',')
+        for line in reader:
+            all_stations.append({
+                'Name': line['Name'],
+                'Street': line['Street'],
+                'District': line['District']
+            })
 
 
 def index(request):
@@ -49,3 +53,7 @@ def bus_stations(request):
         'prev_page_url': prev_page_url,
         'next_page_url': next_page_url
     })
+
+
+if __name__ == '__main__':
+    main()
