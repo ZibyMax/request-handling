@@ -4,7 +4,8 @@ import os
 from django.shortcuts import render
 from django.views.generic import TemplateView
 
-from app.settings import FILES_PATH
+#from app.settings import FILES_PATH
+from django.conf import settings
 
 
 class FileList(TemplateView):
@@ -12,15 +13,15 @@ class FileList(TemplateView):
     
     def get_context_data(self, date=None):
         # Реализуйте алгоритм подготавливающий контекстные данные для шаблона по примеру:
-        files_list = os.listdir(FILES_PATH)
+        files_list = os.listdir(settings.FILES_PATH)
         files = []
 
         if date:
             date = datetime.strptime(date, '%Y-%m-%d').date()
 
         for file in files_list:
-            ctime = datetime.fromtimestamp(os.path.getctime(os.path.join(FILES_PATH, file)))
-            mtime = datetime.fromtimestamp(os.path.getmtime(os.path.join(FILES_PATH, file)))
+            ctime = datetime.fromtimestamp(os.path.getctime(os.path.join(settings.FILES_PATH, file)))
+            mtime = datetime.fromtimestamp(os.path.getmtime(os.path.join(settings.FILES_PATH, file)))
             if not date or date == ctime.date() or date == mtime.date():
                 files.append({
                     'name': file,
@@ -36,13 +37,14 @@ class FileList(TemplateView):
 
 def file_content(request, name):
     # Реализуйте алгоритм подготавливающий контекстные данные для шаблона по примеру:
-    file_name = name
-    with open(os.path.join(FILES_PATH, file_name)) as f:
-        file_content = f.read()
-
+    file_path = os.path.join(settings.FILES_PATH, name)
+    content = ''
+    if os.path.isfile(file_path):
+        with open(os.path.join(settings.FILES_PATH, name)) as f:
+            content = f.read()
     return render(
         request,
         'file_content.html',
-        context={'file_name': file_name,
-                 'file_content': file_content}
+        context={'file_name': name,
+                 'file_content': content}
     )
