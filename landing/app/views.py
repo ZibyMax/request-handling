@@ -15,10 +15,11 @@ def index(request):
 
     from_landing = request.GET.get('from-landing')
     if from_landing:
-        if from_landing == 'original':
-            counter_click['original'] += 1
-        if from_landing == 'test':
-            counter_click['test'] += 1
+        counter_click[from_landing] += 1
+    # if from_landing == 'original':
+    #    counter_click['original'] += 1
+    # if from_landing == 'test':
+    #    counter_click['test'] += 1
     return render_to_response('index.html')
 
 
@@ -29,10 +30,11 @@ def landing(request):
     # Так же реализуйте логику подсчета количества показов
 
     to_landing = request.GET.get('ab-test-arg')
+    counter_show[to_landing] += 1
     if to_landing == 'test':
-        counter_show['test'] += 1
+        # counter_show['test'] += 1
         return render_to_response('landing_alternate.html')
-    counter_show['original'] += 1
+    # counter_show['original'] += 1
     return render_to_response('landing.html')
 
 
@@ -42,17 +44,17 @@ def stats(request):
     # проверяйте GET параметр marker который может принимать значения test и original
     # Для вывода результат передайте в следующем формате:
 
-    if counter_show['original'] != 0:
-        original_conversion = counter_click['original'] / counter_show['original']
-    else:
-        original_conversion = 0
+    # if counter_show['original'] != 0:
+        # original_conversion = counter_click['original'] / counter_show['original']
+    # else:
+        # original_conversion = 0
 
-    if counter_show['test'] != 0:
-        test_conversion = counter_click['test'] / counter_show['test']
-    else:
-        test_conversion = 0
+    # if counter_show['test'] != 0:
+        # test_conversion = counter_click['test'] / counter_show['test']
+    # else:
+        # test_conversion = 0
 
     return render_to_response('stats.html', context={
-        'test_conversion': test_conversion,
-        'original_conversion': original_conversion
+        'test_conversion': counter_click['test'] / counter_show['test'] if counter_show['test'] else 0,
+        'original_conversion': counter_click['original'] / counter_show['original'] if counter_show['original'] else 0
     })
