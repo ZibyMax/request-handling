@@ -11,11 +11,12 @@ def get_all_stations():
     with open(settings.BUS_STATION_CSV, 'r', encoding='cp1251') as f:
         reader = csv.DictReader(f, delimiter=',')
         for line in reader:
-            all_stations.append({
-                'Name': line['Name'],
-                'Street': line['Street'],
-                'District': line['District']
-            })
+            all_stations.append(line)
+            # all_stations.append({
+                # 'Name': line['Name'],
+                # 'Street': line['Street'],
+                # 'District': line['District']
+            # })
     return all_stations
 
 
@@ -25,8 +26,8 @@ def index(request):
 
 def bus_stations(request):
     current_page = int(request.GET.get('page') or 1)
-    p = Paginator(get_all_stations(), 10)
-    bus_stations = p.page(current_page)
+    # p = Paginator(get_all_stations(), 10)
+    bus_stations = P.page(current_page)
     prev_page_url = f'?page={bus_stations.previous_page_number()}' if bus_stations.has_previous() else None
     next_page_url = f'?page={bus_stations.next_page_number()}' if bus_stations.has_next() else None
 
@@ -59,3 +60,6 @@ def bus_stations(request):
         'prev_page_url': prev_page_url,
         'next_page_url': next_page_url
     })
+
+
+P = Paginator(get_all_stations(), 10)
