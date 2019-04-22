@@ -10,8 +10,9 @@ def get_all_stations():
     all_stations = []
     with open(settings.BUS_STATION_CSV, 'r', encoding='cp1251') as f:
         reader = csv.DictReader(f, delimiter=',')
-        for line in reader:
-            all_stations.append(line)
+        all_stations = list(reader)
+        #for line in reader:
+            #all_stations.append(line)
             # all_stations.append({
                 # 'Name': line['Name'],
                 # 'Street': line['Street'],
